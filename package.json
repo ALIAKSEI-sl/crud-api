@@ -1,0 +1,27 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "simple CRUD API",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "",
+    "start:prod": "",
+    "start:multi": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ALIAKSEI-sl/crud-api.git"
+  },
+  "keywords": [
+    "GET",
+    "POST",
+    "PUT",
+    "DELETE"
+  ],
+  "author": "ALIAKSEI-sl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ALIAKSEI-sl/crud-api/issues"
+  },
+  "homepage": "https://github.com/ALIAKSEI-sl/crud-api#readme"
+}
