@@ -13,10 +13,8 @@
     "url": "git+https://github.com/ALIAKSEI-sl/crud-api.git"
   },
   "keywords": [
-    "GET",
-    "POST",
-    "PUT",
-    "DELETE"
+    "CRUD",
+    "API"
   ],
   "author": "ALIAKSEI-sl",
   "license": "ISC",
