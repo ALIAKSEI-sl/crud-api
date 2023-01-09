@@ -42,13 +42,13 @@ export async function requestListener(request: IncomingMessage, response: Server
           }
           break;
         default:
-          response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
-          response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
+          response.writeHead(StatusCode.badRequest, { 'Content-Type': 'application/json' });
+          response.end(JSON.stringify({ code: StatusCode.badRequest, message: ErrorMessages.unsupportedMethod }));
       }
 
     } else {
-      response.writeHead(StatusCode.badRequest, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify({ code: StatusCode.badRequest, message: ErrorMessages.unsupportedMethod }));
+      response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
     }
   } catch {
     response.writeHead(StatusCode.internalServerError, { 'Content-Type': 'application/json' });
