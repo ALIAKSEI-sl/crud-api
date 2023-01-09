@@ -3,7 +3,8 @@
     "target": "es2016",
     "module": "commonjs",
     "resolveJsonModule": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "outDir": "./dist"
   },
   "exclude": [
     "node_modules",
