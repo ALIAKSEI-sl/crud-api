@@ -1,42 +1,57 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
-import { checkEndpoint } from '../helpers/checkEndpoint';
+import { StatusCode, ErrorMessages } from '../helpers/responseMessages';
+import { controller } from './controller';
 
 export async function requestListener(request: IncomingMessage, response: ServerResponse) {
-  const { url, method } = request;
-  const doesExistEndpoint = checkEndpoint(url, method);
+  try {
+    const { url, method } = request;
+    const [api, users, id, ...rest] = url.split('/').filter(Boolean);
 
-  if (doesExistEndpoint.flag) {
-    //const [, , id] = url.split('/').filter(Boolean);
+    if (api === 'api' && users === 'users' && rest.length === 0) {
 
-    switch (method) {
-      case 'GET': console.log('GET');
-        response.writeHead(200);
-        response.end(JSON.stringify({ code: 200, message: 'hi' }));
-        //controller.getAllUser(request, response);
-        break;
-      case 'POST': console.log('POST'); //controller.createUser(request, response);
-        response.writeHead(200);
-        response.end(JSON.stringify({ code: 200, message: 'hi' }));
-        break;
-      case 'PUT': console.log('PUT');
-        response.writeHead(200);
-        response.end(JSON.stringify({ code: 200, message: 'hi' }));
-        break;
-      case 'DELETE': console.log('DELETE');
-        response.writeHead(200);
-        response.end(JSON.stringify({ code: 200, message: 'hi' }));
-        break;
-      default:
+      switch (method) {
+        case 'GET':
+          if (id) {
+            controller.getUser(request, response, id);
+          } else {
+            controller.getAllUser(request, response);
+          }
+          break;
+        case 'POST':
+          if (id) {
+            response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
+          } else {
+            controller.createUser(request, response);
+          }
+          break;
+        case 'PUT':
+          if (id) {
+            controller.updateUser(request, response);
+          } else {
+            response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
+          }
+          break;
+        case 'DELETE':
+          if (id) {
+            controller.deleteUser(request, response);
+          } else {
+            response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
+            response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
+          }
+          break;
+        default:
+          response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
+          response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
+      }
+
+    } else {
+      response.writeHead(StatusCode.badRequest, { 'Content-Type': 'application/json' });
+      response.end(JSON.stringify({ code: StatusCode.badRequest, message: ErrorMessages.unsupportedMethod }));
     }
-  } else {
-    response.writeHead(doesExistEndpoint.code);
-    response.end(JSON.stringify({ code: doesExistEndpoint.code, message: doesExistEndpoint.message }));
+  } catch {
+    response.writeHead(StatusCode.internalServerError, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify({ code: StatusCode.internalServerError, message: ErrorMessages.serverError }));
   }
-
 }
-
-//const body = await getBody(request);
-//console.log(JSON.parse(body));
-//response.setHeader('Content-Type', 'application/json');
-//response.writeHead(200);
-//response.end(body);
