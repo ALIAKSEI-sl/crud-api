@@ -7,12 +7,14 @@ export const enum StatusCode {
   internalServerError = 500,
 }
 
-export const enum ErrorMessages { 
+export const enum ErrorMessages {
   nonExistentUser = "UserId doesn't exist",
-  //requiredFields = "Body doesn't contain required fields",
   nonExistentEndpoint = 'Endpoint does not exist',
   notUuid = "UserId isn't uuid",
   unsupportedMethod = 'This is a request method the server does not support',
   serverError = 'Sorry, error on the server',
   ok = 'successfully',
+  invalidJson = 'Invalid JSON request',
+  requiredFields = 'Required fields are missing or do not match the type',
+  createdUser = 'A new record has been created',
 }
