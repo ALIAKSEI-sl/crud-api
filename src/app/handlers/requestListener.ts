@@ -12,9 +12,9 @@ export async function requestListener(request: IncomingMessage, response: Server
       switch (method) {
         case 'GET':
           if (id) {
-            controller.getUser(request, response, id);
+            controller.getUser(response, id);
           } else {
-            controller.getAllUser(request, response);
+            controller.getAllUser(response);
           }
           break;
         case 'POST':
@@ -27,7 +27,7 @@ export async function requestListener(request: IncomingMessage, response: Server
           break;
         case 'PUT':
           if (id) {
-            controller.updateUser(request, response);
+            controller.updateUser(request, response, id);
           } else {
             response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
             response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
@@ -35,7 +35,7 @@ export async function requestListener(request: IncomingMessage, response: Server
           break;
         case 'DELETE':
           if (id) {
-            controller.deleteUser(request, response);
+            controller.deleteUser(response, id);
           } else {
             response.writeHead(StatusCode.notFound, { 'Content-Type': 'application/json' });
             response.end(JSON.stringify({ code: StatusCode.notFound, message: ErrorMessages.nonExistentEndpoint }));
