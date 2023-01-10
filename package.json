@@ -1,13 +1,13 @@
 {
   "name": "crud-api",
   "version": "1.0.0",
-  "type": "module",
   "description": "simple CRUD API",
   "main": "index.ts",
   "scripts": {
     "start:dev": "nodemon",
     "start:prod": "tsc && node ./dist/index.js",
     "start:multi": "",
+    "test": "jest",
     "eslint": "npx eslint ./src"
   },
   "repository": {
