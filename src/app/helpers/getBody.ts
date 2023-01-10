@@ -1,8 +1,8 @@
 import { IncomingMessage, ServerResponse } from 'node:http';
 import { StatusCode, ErrorMessages } from '../helpers/responseMessages';
-import { IPropertiesOfBody } from './model.propertiesOfBody';
+import { IUser } from '../user/user.model';
 
-export function getBody(request: IncomingMessage, response: ServerResponse): Promise<IPropertiesOfBody> {
+export function getBody(request: IncomingMessage, response: ServerResponse): Promise<IUser> {
   return new Promise((resolve) => {
     let body = '';
 

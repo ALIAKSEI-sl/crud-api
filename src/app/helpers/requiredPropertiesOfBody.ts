@@ -1,10 +1,9 @@
 import { ServerResponse } from 'node:http';
 import { StatusCode, ErrorMessages } from './responseMessages';
-import { IPropertiesOfBody } from './model.propertiesOfBody';
+import { IUser } from '../user/user.model';
 
-export function requiredPropertiesOfBody(response: ServerResponse, body: IPropertiesOfBody) {
+export function requiredPropertiesOfBody(response: ServerResponse, body: IUser) {
   const { username, age, hobbies } = body;
-  console.log(body);
   try {
     if (typeof username !== 'string' || typeof age !== 'number' || !Array.isArray(hobbies)) {
       response.writeHead(StatusCode.badRequest, { 'Content-Type': 'application/json' });
