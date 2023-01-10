@@ -3,7 +3,7 @@ import { requestListener } from './handlers/requestListener';
 import 'dotenv/config';
 
 const port = process.env.PORT || 4000;
-const server = createServer(requestListener);
+export const server = createServer(requestListener);
 
 export function startServer() {
   server.listen(port, () => {
