@@ -116,7 +116,7 @@ describe('second scenario', () => {
 
   it("should return message that required fields don't match the type, method put", async () => {
     const updateUser: IUser = {
-      username: 'Dima',
+      username: 'Mira',
       age: 29,
       hobbies: ['running'],
     };
@@ -136,5 +136,56 @@ describe('second scenario', () => {
 });
 
 describe('third scenario', () => {
+  const id = '0123456789';
 
+  const user: IUser = {
+    username: 'Alex',
+    age: 40,
+    hobbies: [],
+  };
+
+  it('should return empty array', async () => {
+    const expected = [];
+    const response = await supertest(server).get(endpoint);
+
+    expect(response.statusCode).toBe(StatusCode.ok);
+    expect(response.body).toEqual(expected);
+  });
+
+  it('should return message that endpoint does not exist, method post', async () => {
+    const response = await supertest(server).post(`${endpoint}/${id}`).send(user);
+
+    expect(response.statusCode).toBe(StatusCode.notFound);
+    expect(response.header['content-type']).toEqual('application/json');
+    expect(response.body.message).toBe(ErrorMessages.nonExistentEndpoint);
+  });
+
+  it("should return message that userId isn't uuid, method get", async () => {
+    const response = await supertest(server).get(`${endpoint}/${id}`);
+
+    expect(response.statusCode).toBe(StatusCode.badRequest);
+    expect(response.header['content-type']).toEqual('application/json');
+    expect(response.body.message).toBe(ErrorMessages.notUuid);
+  });
+
+  it("should return message that userId isn't uuid, method put", async () => {
+    const updateUser: IUser = {
+      username: 'Oman',
+      age: 36,
+      hobbies: [],
+    };
+
+    const response = await supertest(server).put(`${endpoint}/${user.id}`).send(updateUser);
+
+    expect(response.statusCode).toBe(StatusCode.badRequest);
+    expect(response.header['content-type']).toEqual('application/json');
+    expect(response.body.message).toBe(ErrorMessages.notUuid);
+
+  });
+
+  it("should return message that userId isn't uuid, method delete", async () => {
+    const response = await supertest(server).delete(`${endpoint}/${user.id}`);
+
+    expect(response.statusCode).toBe(StatusCode.badRequest);
+  });
 });
