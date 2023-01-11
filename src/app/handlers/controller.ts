@@ -8,10 +8,12 @@ import { user } from '../user/user';
 export class Controller {
   getUser(response: ServerResponse, id: string) {
     try {
-      checkId(response, id);
-      const userById = user.findById(id);
-      response.writeHead(StatusCode.ok, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(userById));
+      const idIsExist = checkId(response, id);
+      if (idIsExist) {
+        const userById = user.findById(id);
+        response.writeHead(StatusCode.ok, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(userById));
+      }
     } catch {
       response.writeHead(StatusCode.internalServerError, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ code: StatusCode.internalServerError, message: ErrorMessages.serverError }));
@@ -32,10 +34,12 @@ export class Controller {
   async createUser(request: IncomingMessage, response: ServerResponse) {
     try {
       const body = await getBody(request, response);
-      requiredPropertiesOfBody(response, body);
-      const newUser = user.create(body);
-      response.writeHead(StatusCode.created, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(newUser));
+      const propertiesIsRequired = requiredPropertiesOfBody(response, body);
+      if (propertiesIsRequired) {
+        const newUser = user.create(body);
+        response.writeHead(StatusCode.created, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(newUser));
+      }
     } catch {
       response.writeHead(StatusCode.internalServerError, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ code: StatusCode.internalServerError, message: ErrorMessages.serverError }));
@@ -44,12 +48,16 @@ export class Controller {
 
   async updateUser(request: IncomingMessage, response: ServerResponse, id: string) {
     try {
-      checkId(response, id);
-      const body = await getBody(request, response);
-      requiredPropertiesOfBody(response, body);
-      const updateUser = user.update(id, body);
-      response.writeHead(StatusCode.ok, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(updateUser));
+      const idIsExist = checkId(response, id);
+      if (idIsExist) {
+        const body = await getBody(request, response);
+        const propertiesIsRequired = requiredPropertiesOfBody(response, body);
+        if (propertiesIsRequired) {
+          const updateUser = user.update(id, body);
+          response.writeHead(StatusCode.ok, { 'Content-Type': 'application/json' });
+          response.end(JSON.stringify(updateUser));
+        }
+      }
     } catch {
       response.writeHead(StatusCode.internalServerError, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ code: StatusCode.internalServerError, message: ErrorMessages.serverError }));
@@ -58,10 +66,12 @@ export class Controller {
 
   deleteUser(response: ServerResponse, id: string) {
     try {
-      checkId(response, id);
-      const deleteUser = user.delete(id);
-      response.writeHead(StatusCode.noContent, { 'Content-Type': 'application/json' });
-      response.end(JSON.stringify(deleteUser));
+      const idIsExist = checkId(response, id);
+      if (idIsExist) {
+        const deleteUser = user.delete(id);
+        response.writeHead(StatusCode.noContent, { 'Content-Type': 'application/json' });
+        response.end(JSON.stringify(deleteUser));
+      }
     } catch {
       response.writeHead(StatusCode.internalServerError, { 'Content-Type': 'application/json' });
       response.end(JSON.stringify({ code: StatusCode.internalServerError, message: ErrorMessages.serverError }));
