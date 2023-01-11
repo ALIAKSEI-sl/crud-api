@@ -43,12 +43,12 @@ describe('first scenario', () => {
   });
 
   it('should update user', async () => {
-    const updateUser = {
+    const updateUser: IUser = {
       username: 'Mark',
       age: 22,
       hobbies: [],
     };
-    console.log(user.id);
+
     const response = await supertest(server).put(`${endpoint}/${user.id}`).send(updateUser);
 
     expect(response.statusCode).toBe(StatusCode.ok);
@@ -64,7 +64,7 @@ describe('first scenario', () => {
     expect(response.statusCode).toBe(StatusCode.noContent);
   });
 
-  it('should return message that', async () => {
+  it("should return message that user isn't found", async () => {
     const response = await supertest(server).get(`${endpoint}/${user.id}`);
 
     expect(response.statusCode).toBe(StatusCode.notFound);
@@ -74,7 +74,65 @@ describe('first scenario', () => {
 });
 
 describe('second scenario', () => {
+  const user: IUser = {
+    username: 'Adam',
+    age: 32,
+    hobbies: ['tennis', 'swimming'],
+  };
 
+  it('should create new user and return it', async () => {
+    const response = await supertest(server).post(endpoint).send(user);
+
+    expect(response.statusCode).toBe(StatusCode.created);
+    expect(response.header['content-type']).toEqual('application/json');
+    expect(response.body.id).not.toBe('');
+    expect(response.body.username).toBe(user.username);
+    expect(response.body.age).toBe(user.age);
+
+    user.id = response.body.id;
+  });
+
+  it('should delete user by id', async () => {
+    const response = await supertest(server).delete(`${endpoint}/${user.id}`);
+
+    expect(response.statusCode).toBe(StatusCode.noContent);
+  });
+
+  it('should return empty array', async () => {
+    const expected = [];
+    const response = await supertest(server).get(endpoint);
+
+    expect(response.statusCode).toBe(StatusCode.ok);
+    expect(response.body).toEqual(expected);
+  });
+
+  it("should return message that userId doesn't exist", async () => {
+    const response = await supertest(server).get(`${endpoint}/${user.id}`);
+
+    expect(response.statusCode).toBe(StatusCode.notFound);
+    expect(response.header['content-type']).toEqual('application/json');
+    expect(response.body.message).toBe(ErrorMessages.nonExistentUser);
+  });
+
+  it("should return message that required fields don't match the type, method put", async () => {
+    const updateUser: IUser = {
+      username: 'Dima',
+      age: 29,
+      hobbies: ['running'],
+    };
+
+    const response = await supertest(server).put(`${endpoint}/${user.id}`).send(updateUser);
+
+    expect(response.statusCode).toBe(StatusCode.notFound);
+    expect(response.header['content-type']).toEqual('application/json');
+    expect(response.body.message).toBe(ErrorMessages.nonExistentUser);
+  });
+
+  it("should return message that userId doesn't exist, method put", async () => {
+    const response = await supertest(server).delete(`${endpoint}/${user.id}`);
+
+    expect(response.statusCode).toBe(StatusCode.notFound);
+  });
 });
 
 describe('third scenario', () => {

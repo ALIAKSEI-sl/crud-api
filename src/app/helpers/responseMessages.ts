@@ -15,6 +15,6 @@ export const enum ErrorMessages {
   serverError = 'Sorry, error on the server',
   ok = 'successfully',
   invalidJson = 'Invalid JSON request',
-  requiredFields = 'Required fields are missing or do not match the type',
+  requiredFields = "Required fields are missing or don't match the type",
   createdUser = 'A new record has been created',
 }
