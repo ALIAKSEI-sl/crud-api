@@ -6,7 +6,7 @@
   "scripts": {
     "start:dev": "nodemon",
     "start:prod": "tsc && node ./dist/index.js",
-    "start:multi": "",
+    "start:multi": "nodemon --horizontalScaling=enable",
     "test": "jest",
     "eslint": "npx eslint ./src"
   },
