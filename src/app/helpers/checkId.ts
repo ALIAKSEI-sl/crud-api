@@ -1,7 +1,7 @@
 import { ServerResponse } from 'node:http';
 import { validate as uuidValidate } from 'uuid';
 import { StatusCode, ErrorMessages } from '../helpers/responseMessages';
-import dataBase from '../user/dataBase.json';
+import { dataBase } from '../user/user';
 
 export function checkId(response: ServerResponse, id: string) {
   try {
