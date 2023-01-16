@@ -22,16 +22,16 @@ Run the application in development mode
 npm run start:dev
 ```
 
+Run tests scenarios for API
+
+```
+npm run test
+```
+
 Run the application in production mode
 
 ```
 npm run start:prod
-```
-
-Run tests scenarios for API
-
-```
-npm test
 ```
 
 Run cluster mode with default load balancer

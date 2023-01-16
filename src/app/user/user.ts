@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IUser } from './user.model';
-//import dataBase from './dataBase.json';
 
 export const dataBase = [];
 

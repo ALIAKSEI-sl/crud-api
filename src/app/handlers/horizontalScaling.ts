@@ -14,20 +14,9 @@ export function createHorizontalScaling() {
     cluster.on('exit', (worker) => {
       console.log(`worker ${worker.process.pid} died`);
     });
-
-    cluster.on('message', async (worker, message) => {
-      // if (message.cmd in usersRepository) {
-      //   const data = await usersRepository[message.cmd](...message.data);
-      //   worker.send({ cmd: message.cmd, data });
-      // }
-    });
   } else {
     server.listen(port, () => {
       console.log(`Worker ${process.pid} started`);
     });
-
-    // process.on('message', (message) => {
-    //   usersRepository.emit(message['cmd'], message);
-    // });
   }
 }
