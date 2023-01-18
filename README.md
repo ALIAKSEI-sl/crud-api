@@ -40,6 +40,10 @@ Run cluster mode with default load balancer
 npm run start:multi
 ```
 
+## PORT
+
+Value of `port` on which the application is running is stored in `.env` file, it can be changed
+
 ## API
 
 Implemented endpoint: `api/users`
